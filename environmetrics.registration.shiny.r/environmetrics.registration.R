@@ -11,6 +11,7 @@
 #
 
 library(shiny) # shiny
+library(shinyjs) # magic button
 library(rdrop2) # dropbox
 
 token <- readRDS('token.rds')
@@ -23,7 +24,12 @@ fields.to.save <- c('name', 'surname', 'email', 'address')
 
 ui <- fluidPage(
   
+  useShinyjs(),
+  
   # Details --------------------------------------------------------------------------------------
+  
+  helpText("WARNING: THIS FORM DOES NOT SUPPORT PARAGRAPHS"),
+  helpText(""),
   
   titlePanel("Details"),
   
@@ -44,44 +50,45 @@ ui <- fluidPage(
   
   # group preferences ----------------------------------------------------------------------
   
-  #titlePanel('Group preferences'),
+  titlePanel('Groups preference'),
   
-  #helpText("Note: Please rank the groups according to your own preference.",
-  #         "Depending on people interests, you may not be given your first choice."),
-  #textInput(inputId = "pop", label = "Population dynamics", value = "1", width = '150px'),
-  #textInput(inputId = "gis", label = "GIS", value = "2", width = '150px'),
-  #textInput(inputId = "design", label = "Survey design", value = "3", width = '150px'),
+  helpText("Note: Please rank the groups according to your own preference.",
+           "Depending on people interests, you may not be given your first choice."),
+  textInput(inputId = "pop", label = "Population dynamics", value = "1", width = '200px'),
+  textInput(inputId = "life", label = "Life history trait / Evolution / genetics", value = "2", width = '200px'),
+  textInput(inputId = "management", label = "Management advice", value = "3", width = '200px'),
+  textInput(inputId = "env", label = "Environmental change / modelling", value = "4", width = '200px'),
+  textInput(inputId = "gis", label = "GIS", value = "5", width = '200px'),
+  textInput(inputId = "design", label = "Survey design", value = "6", width = '200px'),
   
   # groups talks ---------------------------------------------------------------------------
   
-  #titlePanel('Group talk'),
+  titlePanel('Group talk'),
   
-  #helpText("Note: Please check if you would like to do a long presentation.",
-  #         "We assume this is for the group you are most interested in."),
-  #checkboxInput("talk.long", "Talk", FALSE),
-  #textInput(inputId = "title.long", label = "Title", value = "", width = '100%'),
-  #textInput(inputId = "keywords.long", label = "Keywords", value = "", width = '100%'),
-  #textInput(inputId = "abstract.long", label = "Abstract", value = "", width = '100%'),
-  
+  helpText("Note: Please check if you would like to do a long presentation.",
+           "We assume this is for the group you are most interested in."),
+  checkboxInput("talk.long", "Talk", FALSE),
+  textInput(inputId = "title.long", label = "Title", value = "", width = '100%'),
+  textInput(inputId = "keywords.long", label = "Keywords", value = "", width = '100%'),
+  textInput(inputId = "abstract.long", label = "Abstract", value = "", width = '100%'),
   
   # Food section -----------------------------------------------------------------------------
   
-  #titlePanel('Food'),
+  titlePanel('Food'),
   
-  #helpText("Note: Lunch in the canteen will be about 7 euros. We cannot cater for allergies.",
-  #         "Dinner will be on Wedneday evening, We will do our best to keep it under 20 euros."),
-  
-  #checkboxInput("lunch", "Lunch in canteen (7 euros)", FALSE),
-  #checkboxInput("vegan", "Vegan", FALSE),
-  #checkboxInput("diner", "Diner", FALSE),
+  helpText("Note: Lunch in the canteen will be about 7 euros. We cannot cater for allergies.",
+           "Diner will be on Wedneday evening, we will do our best to keep it under 20 euros."),
+  checkboxInput("lunch", "Lunch in canteen (7 euros)", FALSE),
+  checkboxInput("vegan", "Vegan", FALSE),
+  checkboxInput("diner", "Diner", FALSE),
   
   # submit --------------------------------------------------------------------------------------
   
   titlePanel('Submission'),
   
-  helpText("Note: please check you filled all the parts.",
-           "Edits are not possible."),
-  actionButton("submit", "Submit", class = "btn-primary")
+  helpText("Note: please check you filled all the parts."),
+  actionButton("submit", "Submit", class = "btn-primary"),
+  helpText("")
   
 )
 
@@ -95,13 +102,27 @@ server <- function(input, output, session) {
     data
   })
   
+  # Information about button being clicked
+  observe({ 
+    if(input$submit == 1){
+      info('Thanks for registering !')
+    } 
+    if(input$submit > 1){
+      info('Registration updated !')
+    }
+  })
+  
+  output$nText <- renderText({
+    input$submit
+  })
+  
   # When the Submit button is clicked, save the form data
   observeEvent(input$submit, {
     drop_dir(outputs.dir)
     file.name <- paste('registration',#formData[[1]], formData[[2]], 
-                  gsub(substring(Sys.time(), 12, 19), pattern = ':', replacement = ''),
-                  'RData',
-                  sep = '.')
+                       gsub(substring(Sys.time(), 12, 19), pattern = ':', replacement = ''),
+                       'RData',
+                       sep = '.')
     assign(gsub(file.name, pattern = '.RData', replacement = ''), formData())
     file.dir <- file.path(tempdir(), file.name)
     save(list =  gsub(file.name, pattern = '.RData', replacement = ''), file = file.dir)

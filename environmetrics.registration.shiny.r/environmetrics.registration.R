@@ -18,7 +18,11 @@ token <- readRDS('token.rds')
 drop_acc(dtoken = token)
 outputs.dir <- '2017.registration'
 
-fields.to.save <- c('name', 'surname', 'email', 'address')
+fields.to.save <- c('name', 'surname', 'email', 'address',
+                    'type',  'authors', 'title', 'keywords', 'abstract',
+                    'pop', 'life', 'management', 'env', 'gis', 'design',
+                    'title.long', 'authors.long', 'abstract.long', 'keywords.long', #'talk.long', 
+                    'lunch', 'vegan', 'diner')
 
 # define UI ####################################################################################
 
@@ -28,7 +32,7 @@ ui <- fluidPage(
   
   # Details --------------------------------------------------------------------------------------
   
-  helpText("WARNING: THIS FORM DOES NOT SUPPORT PARAGRAPHS"),
+  helpText("WARNING: PLEASE DO NOT USE SPECIAL CHARACTERS APART FROM . , ; @ ( ) _"),
   helpText(""),
   
   titlePanel("Details"),
@@ -40,53 +44,67 @@ ui <- fluidPage(
   
   # presentation ---------------------------------------------------------------------------
   
-  titlePanel('Talk or poster'),
+  titlePanel('Talk / poster'),
   
-  helpText("Note: Please uncheck if you would rather do a poster."),
-  checkboxInput("talk", "Talk", TRUE),
+  helpText("On the first day there will be quick-fire presentations (10 min) and posters on any subject concerning environmental statistics and modelling of natural resources.",
+           "If you would like to present, provide details below."),
+  
+  radioButtons(inputId = 'type', 'Presentation type', choices = c('Talk', 'Poster', 'None')),
   textInput(inputId = "title", label = "Title", value = "", width = '100%'),
-  textInput(inputId = "keywords", label = "Keywords", value = "", width = '100%'),
-  textInput(inputId = "abstract", label = "Abstract", value = "", width = '100%'),
+  textAreaInput(inputId = 'authors', 'Authors list', height = '50px', width = '100%', resize = 'both',
+                placeholder = 'One author per line with email and affiliation'), 
+  textAreaInput(inputId = "abstract", label = "Abstract", height = '50px', width = '100%',  resize = 'both',
+                placeholder = 'Please limit to 300 words'),
+  textInput(inputId = "keywords", label = "Keywords", value = "", width = '100%',
+            placeholder = 'Please limit to 6 and separate with comma'),
+  
   
   # group preferences ----------------------------------------------------------------------
   
-  titlePanel('Groups preference'),
+  titlePanel('Groups of preference'),
   
-  helpText("Note: Please rank the groups according to your own preference.",
-           "Depending on people interests, you may not be given your first choice."),
+  helpText("On the second day we will break out into subgroups, please rank your preferred subjects for these groups below. Depending on people interests, you may not be given your first choice."),
+  
   textInput(inputId = "pop", label = "Population dynamics", value = "1", width = '200px'),
   textInput(inputId = "life", label = "Life history trait / Evolution / genetics", value = "2", width = '200px'),
   textInput(inputId = "management", label = "Management advice", value = "3", width = '200px'),
   textInput(inputId = "env", label = "Environmental change / modelling", value = "4", width = '200px'),
   textInput(inputId = "gis", label = "GIS", value = "5", width = '200px'),
   textInput(inputId = "design", label = "Survey design", value = "6", width = '200px'),
-  
+
   # groups talks ---------------------------------------------------------------------------
   
   titlePanel('Group talk'),
   
-  helpText("Note: Please check if you would like to do a long presentation.",
-           "We assume this is for the group you are most interested in."),
-  checkboxInput("talk.long", "Talk", FALSE),
+  helpText("Please fill if you would like to do a longer, more detailed presentation in one of the sub-groups.",
+           "We assume this is for the group you have ranked as number 1."),
+  
+  #checkboxInput("talk.long", "Talk", FALSE),
   textInput(inputId = "title.long", label = "Title", value = "", width = '100%'),
-  textInput(inputId = "keywords.long", label = "Keywords", value = "", width = '100%'),
-  textInput(inputId = "abstract.long", label = "Abstract", value = "", width = '100%'),
+  textAreaInput(inputId = 'authors.long', 'Authors list', height = '50px', width = '100%', resize = 'both',
+                placeholder = 'One author per line with email and affiliation'), 
+  textAreaInput(inputId = "abstract.long", label = "Abstract", height = '50px', width = '100%',  resize = 'both',
+                placeholder = 'Please limit to 300 words'),
+  textInput(inputId = "keywords.long", label = "Keywords", value = "", width = '100%',
+            placeholder = 'Please limit to 6 and separate with comma'),
+  
   
   # Food section -----------------------------------------------------------------------------
   
-  titlePanel('Food'),
+  titlePanel('Food / Social'),
   
-  helpText("Note: Lunch in the canteen will be about 7 euros. We cannot cater for allergies.",
-           "Diner will be on Wedneday evening, we will do our best to keep it under 20 euros."),
-  checkboxInput("lunch", "Lunch in canteen (7 euros)", FALSE),
-  checkboxInput("vegan", "Vegan", FALSE),
-  checkboxInput("diner", "Diner", FALSE),
+  helpText("Lunch in the canteen will be about 7 euros.",
+           "Dinner will be on Wedneday evening, we will do our best to keep it under 20 euros.",
+           'We cannot cater for allergies but you can choose a vegan option for all your meals.'),
+  checkboxInput("lunch", "Lunch in canteen", FALSE),
+  checkboxInput("dinner", "Diner", FALSE),
+  checkboxInput("vegan", "I am vegan", FALSE),
   
   # submit --------------------------------------------------------------------------------------
   
   titlePanel('Submission'),
   
-  helpText("Note: please check you filled all the parts."),
+  helpText("Please check you filled all the parts."),
   actionButton("submit", "Submit", class = "btn-primary"),
   helpText("")
   
@@ -119,13 +137,14 @@ server <- function(input, output, session) {
   # When the Submit button is clicked, save the form data
   observeEvent(input$submit, {
     drop_dir(outputs.dir)
-    file.name <- paste('registration',#formData[[1]], formData[[2]], 
-                       gsub(substring(Sys.time(), 12, 19), pattern = ':', replacement = ''),
-                       'RData',
-                       sep = '.')
+    file.name <- paste(#'registration', 
+      input$name, input$surname,
+      gsub(substring(Sys.time(), 12, 19), pattern = ':', replacement = '.'),
+      'RData',
+      sep = '.')
     assign(gsub(file.name, pattern = '.RData', replacement = ''), formData())
     file.dir <- file.path(tempdir(), file.name)
-    save(list =  gsub(file.name, pattern = '.RData', replacement = ''), file = file.dir)
+    save(list = gsub(file.name, pattern = '.RData', replacement = ''), file = file.dir)
     #save(as.list(eval(parse(text = gsub(file.name, pattern = '.RData', replacement = '')))), file = file.dir)
     drop_upload(file.dir, path = '2017.registration')
   })

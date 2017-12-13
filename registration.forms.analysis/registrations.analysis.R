@@ -30,5 +30,8 @@ for(f in 1:length(files.to.download)){
 responses <- list()
 for(f in 1:length(files.to.download)){
   responses[[f]] <- get(load(paste0(download.folder, '/', files.to.download[f])))
-  names(reponses)[f] <- paste(responses[[f]]['name'], responses[[f]]['surname'], sep = '.')
+  names(responses)[f] <- gsub(files.to.download[f], pattern = '.RData', replacement = '')
 }
+
+sapply(responses, '[[', 1)
+sapply(responses, '[[', 'surname')

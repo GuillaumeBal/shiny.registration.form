@@ -18,11 +18,11 @@ token <- readRDS('token.rds')
 drop_acc(dtoken = token)
 outputs.dir <- '2017.registration'
 
-fields.to.save <- c('name', 'surname', 'email', 'address',
+fields.to.save <- c('name', 'middlename', 'surname', 'email', 'address',
                     'type',  'authors', 'title', 'keywords', 'abstract',
                     'pop', 'life', 'management', 'env', 'gis', 'design',
                     'title.long', 'authors.long', 'abstract.long', 'keywords.long', #'talk.long', 
-                    'lunch', 'vegan', 'diner')
+                    'lunch', 'dinner', 'vegan')
 
 # define UI ####################################################################################
 
@@ -38,6 +38,7 @@ ui <- fluidPage(
   titlePanel("Details"),
   
   textInput(inputId = "name", label = "Name", value = "", width = '300px'),
+  textInput(inputId = "middlename", label = "Middle name", value = "", width = '300px'),
   textInput(inputId = "surname", label = "Surname", value = "", width = '300px'),
   textInput(inputId = "email", label = "Email", value = "", width = '300px'),
   textInput(inputId = "address", label = "Address", value = "", width = '100%'),
@@ -97,7 +98,7 @@ ui <- fluidPage(
            "Dinner will be on Wedneday evening, we will do our best to keep it under 20 euros.",
            'We cannot cater for allergies but you can choose a vegan option for all your meals.'),
   checkboxInput("lunch", "Lunch in canteen", FALSE),
-  checkboxInput("dinner", "Diner", FALSE),
+  checkboxInput("dinner", "Dinner", FALSE),
   checkboxInput("vegan", "I am vegan", FALSE),
   
   # submit --------------------------------------------------------------------------------------

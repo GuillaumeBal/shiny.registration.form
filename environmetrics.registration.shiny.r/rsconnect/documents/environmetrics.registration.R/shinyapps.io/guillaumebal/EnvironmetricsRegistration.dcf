@@ -5,8 +5,8 @@ account: guillaumebal
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 247762
-bundleId: 1132569
+bundleId: 1140593
 url: https://guillaumebal.shinyapps.io/EnvironmetricsRegistration/
-when: 1513176057.95727
+when: 1513592140.88199
 asMultiple: FALSE
 asStatic: FALSE

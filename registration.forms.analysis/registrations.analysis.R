@@ -15,6 +15,7 @@ files.to.download <- drop_dir(drop.dir)$name
 
 # folder to download answers
 download.folder <- paste0(wd.analysis, '/forms.downloaded/')
+unlink(download.folder, recursive = TRUE, force = TRUE)
 dir.create(download.folder)
 
 for(f in 1:length(files.to.download)){
@@ -35,3 +36,6 @@ for(f in 1:length(files.to.download)){
 
 sapply(responses, '[[', 1)
 sapply(responses, '[[', 'surname')
+sapply(responses, '[[', 'title')
+sapply(responses, '[[', 'authors.long')
+print(responses, right = FALSE)

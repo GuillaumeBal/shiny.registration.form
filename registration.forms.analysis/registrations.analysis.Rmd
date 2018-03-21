@@ -1,4 +1,17 @@
-rm(list = ls())
+---
+title: "registration.details"
+author: "Guillaume Bal"
+date: "21 March 2018"
+output: word_document
+---
+
+
+```{r}
+
+# echo = FALSE, no code shown
+# iclude for whether or not to show outputs
+
+#rm(list = ls())
 
 library(rdrop2) # dropbox
 
@@ -25,7 +38,7 @@ for(f in 1:length(files.to.download)){
   drop_download(paste0(drop.dir, '/', files.to.download[f]),
                 local_path = paste0(download.folder, '/', files.to.download[f]))
 }
-  
+
 # create big list from files ---------------------------------------------------------
 
 responses <- list()
@@ -33,11 +46,15 @@ for(f in 1:length(files.to.download)){
   responses[[f]] <- get(load(paste0(download.folder, '/', files.to.download[f])))
   names(responses)[f] <- gsub(files.to.download[f], pattern = '.RData', replacement = '')
 }
+```
 
-#sapply(responses, '[[', 1)
-#sapply(responses, '[[', 'surname')
-sapply(responses, '[[', 'title')
-sapply(responses, '[[', 'title.long')
-#sapply(responses, '[[', 'authors.long')
-#print(responses, right = FALSE)
-#`Elvira .de eyto.09.34.47`
+```{r, echo = FALSE, results="asis"}
+
+for(p in 1:length(responses)){
+  cat(names(responses)[p])
+  cat("  \n")
+  cat(responses[[p]]['title'])
+  cat("  \n")
+}
+
+```

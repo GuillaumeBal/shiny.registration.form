@@ -1,5 +1,3 @@
-rm(list = ls())
-
 library(rdrop2) # dropbox
 
 token <- readRDS('token.rds')
@@ -25,7 +23,7 @@ for(f in 1:length(files.to.download)){
   drop_download(paste0(drop.dir, '/', files.to.download[f]),
                 local_path = paste0(download.folder, '/', files.to.download[f]))
 }
-  
+
 # create big list from files ---------------------------------------------------------
 
 responses <- list()
@@ -33,11 +31,3 @@ for(f in 1:length(files.to.download)){
   responses[[f]] <- get(load(paste0(download.folder, '/', files.to.download[f])))
   names(responses)[f] <- gsub(files.to.download[f], pattern = '.RData', replacement = '')
 }
-
-#sapply(responses, '[[', 1)
-#sapply(responses, '[[', 'surname')
-sapply(responses, '[[', 'title')
-sapply(responses, '[[', 'title.long')
-#sapply(responses, '[[', 'authors.long')
-#print(responses, right = FALSE)
-#`Elvira .de eyto.09.34.47`

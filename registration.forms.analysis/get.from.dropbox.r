@@ -4,8 +4,8 @@ token <- readRDS('token.rds')
 drop_acc(dtoken = token)
 drop.dir <- '2017.registration'
 
-#wd.root <- 'C:/Users/gbal/Desktop/github.work/shiny.registration.form/'
-wd.root <- 'C:/Users/Pierre/Desktop/shiny.registration.form/'
+wd.root <- 'C:/Users/gbal/Desktop/github.work/shiny.registration.form/'
+#wd.root <- 'C:/Users/Pierre/Desktop/shiny.registration.form/'
 wd.analysis <- paste0(wd.root, 'registration.forms.analysis')
 
 # dowloading files --------------------------------------------------------------

@@ -21,6 +21,10 @@ responses <- responses[order(sapply(responses, '[[', 'surname'))]
 
 #sapply(responses, '[[', 'surname')
 
+# people interests ranks =================================
+
+source('people.main.interests.r')
+
 # create word document =================================
 
 doc <- docx(title = 'Environmetrics meeting, 
@@ -171,7 +175,14 @@ doc <- addTitle(doc,
                 value = 'TMB setup')
 
 doc <- addParagraph(doc,
-                    value = 'This is what you need to do to get ready for the course')
+                    value = 'Please install TMB on your laptop before the workshop. Information on installation can be found here:')
+
+doc <- addParagraph(doc,
+                    value = pot('https://github.com/nwfsc-assess/geostatistical_delta-GLMM/wiki/Steps-to-install-TMB',
+                                hyperlink =  'https://github.com/nwfsc-assess/geostatistical_delta-GLMM/wiki/Steps-to-install-TMB',
+                                textBoldItalic( color = '#428BCA', underline = TRUE) 
+                    )
+)
 
 # list of participants =====================================
 
@@ -196,6 +207,15 @@ for(p in 1:length(responses)){
                       value = responses[[p]]["address"])
   doc <- addParagraph(doc, 
                       value = responses[[p]]["email"])
+  doc <- addParagraph(doc, 
+                      value = paste0('Main interests: ',
+                                     paste(sapply(1:3, 
+                                                  function(i){
+                                                    interests.full[which(interests.ranks[p, ] == i)]
+                                                  }),
+                                           collapse = ' / ')
+                      ))
+  
 }
 
 # Organisation details ===================================

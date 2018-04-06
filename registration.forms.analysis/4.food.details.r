@@ -25,11 +25,12 @@ responses <- responses[order(sapply(responses, '[[', 'surname'))]
 
 n.dinners <- sum(as.logical(sapply(responses, '[[', 'dinner')))
 
-sapply(responses, '[[', 'lunch')
-
-sapply(responses, '[[', 'vegan')
+n.lunches <- sum(as.logical(sapply(responses, '[[', 'lunch')))
 
 n.vegan.dinners <- sum(as.logical(sapply(responses, '[[', 'dinner')) &
+                         as.logical(sapply(responses, '[[', 'vegan')))
+
+n.vegan.lunches <- sum(as.logical(sapply(responses, '[[', 'lunch')) &
                          as.logical(sapply(responses, '[[', 'vegan')))
 
 

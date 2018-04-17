@@ -55,7 +55,7 @@ doc <- addPageNumber(doc)
 
 doc <- addTitle(doc,
                 level = 1,
-                value = 'Program')
+                value = 'food')
 
 
 # make documents =============================================

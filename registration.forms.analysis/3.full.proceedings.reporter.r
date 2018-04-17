@@ -95,7 +95,7 @@ doc <- addTitle(doc,
 
 for(p in 1:length(responses)){
   # if a title add presentation details
-  if(responses[[p]]['title'] != '' & responses[[p]]['surname'] != 'Jackson'){
+  if(responses[[p]]['title'] != '' & responses[[p]]['surname'] != 'Jackson'){ # 
     print(p)
     doc <- addTitle(doc,
                     value = responses[[p]]['title'],
@@ -241,19 +241,19 @@ doc <- addImage(doc,
                 width = 5,
                 height = 5)
 
-doc <- addPageBreak(doc)
+#doc <- addPageBreak(doc)
 
-doc <- addTitle(doc,
-                level = 2,
-                value = 'Tribeton diner')
+#doc <- addTitle(doc,
+#                level = 2,
+#                value = 'Tribeton diner')
 
-doc <- addParagraph(doc,
-                    value = '1-3 Merchants Rd, Galway')
+#doc <- addParagraph(doc,
+#                    value = '1-3 Merchants Rd, Galway')
 
-doc <- addImage(doc,
-                filename = 'dinner.location.png',
-                width = 6,
-                height = 5)
+#doc <- addImage(doc,
+#                filename = 'dinner.location.png',
+#                width = 6,
+#                height = 5)
 
 # make documents =============================================
 

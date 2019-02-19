@@ -10,16 +10,18 @@
 #    http://shiny.rstudio.com/
 #
 
+#2019MiTsWorkshop
+
 library(shiny) # shiny
 library(shinyjs) # magic button
 library(rdrop2) # dropbox
 
 token <- readRDS('token.rds')
 drop_acc(dtoken = token)
-outputs.dir <- '2018.jim.time.series'
+outputs.dir <- '2019MiJttRegistration/0.applications/'
 
 fields.to.save <- c('name', 'middlename', 'surname', 'email', 'address',
-                    'seminar',  'workshp', 'application', 
+                    'seminar', 'workshp', 'application', 
                     'lunch', 'dinner', 'vegan')
 
 # define UI ####################################################################################
@@ -30,7 +32,7 @@ ui <- fluidPage(
   
   # Details --------------------------------------------------------------------------------------
   
-  helpText("WARNING: PLEASE DO NOT USE SPECIAL CHARACTERS APART FROM . , ; @ ( ) _"),
+  helpText("WARNING: PLEASE LIMIT SPECIAL CHARACTERS TO . , ; @ ( ) _"),
   helpText(""),
   
   titlePanel("Details"),
@@ -48,15 +50,15 @@ ui <- fluidPage(
   checkboxInput("seminar", "Seminar on wedesday", FALSE),
   checkboxInput("workshop", "Workshop on Thursday/Friday", FALSE),
   textAreaInput(inputId = "application", label = "Application", height = '50px',width = '600px',  resize = 'both',
-                placeholder = 'Please explain briefy how you would benefit from the workshop and whether you are willing to dissemate its content to other people from your workplace'),
+                placeholder = 'Please explain briefy how you would benefit from the workshop and whether you would dissemate its content to your workplace colleagues'),
 
 
   # Food section -----------------------------------------------------------------------------
   
   titlePanel('Food / Social'),
   
-  helpText("Lunch in the canteen will be about 7 euros.", "Dinner will be on Thursday evening.",
-           'The canteen cannot cater for allergies but you can choose a vegan option for all your meals.'),
+  helpText("Lunch in the canteen is about 7 euros.", "Dinner will be on Thursday evening.",
+           'The canteen cannot cater for allergies.'),
   checkboxInput("lunch", "Lunch in canteen", FALSE),
   checkboxInput("dinner", "Dinner", FALSE),
   checkboxInput("vegan", "I am vegan", FALSE),
@@ -107,7 +109,7 @@ server <- function(input, output, session) {
     file.dir <- file.path(tempdir(), file.name)
     save(list = gsub(file.name, pattern = '.RData', replacement = ''), file = file.dir)
     #save(as.list(eval(parse(text = gsub(file.name, pattern = '.RData', replacement = '')))), file = file.dir)
-    drop_upload(file.dir, path = '2017.registration')
+    drop_upload(file.dir, path = outputs.dir)
   })
   
 }

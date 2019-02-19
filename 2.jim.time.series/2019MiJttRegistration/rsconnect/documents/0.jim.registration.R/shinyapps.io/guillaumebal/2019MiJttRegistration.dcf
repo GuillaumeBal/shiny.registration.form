@@ -1,0 +1,12 @@
+name: 2019MiJttRegistration
+title: 2019MiJttRegistration
+username:
+account: guillaumebal
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 725725
+bundleId: 1884237
+url: https://guillaumebal.shinyapps.io/2019MiJttRegistration/
+when: 1550577645.9289
+asMultiple: FALSE
+asStatic: FALSE

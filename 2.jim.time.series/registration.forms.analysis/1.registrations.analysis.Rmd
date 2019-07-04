@@ -1,7 +1,7 @@
 ---
-title: "registration.details"
+title: "JTT.registration.details"
 author: "Guillaume Bal"
-date: "21 March 2018"
+date: "2019-02-19"
 output: word_document
 ---
 
@@ -17,9 +17,9 @@ library(rdrop2) # dropbox
 
 token <- readRDS('token.rds')
 drop_acc(dtoken = token)
-drop.dir <- '2017.registration'
+drop.dir <- '2019MiJttRegistration/0.applications'
 
-wd.root <- 'C:/Users/gbal/Desktop/github.work/shiny.registration.form/'
+wd.root <- 'C:/Users/gbal/Desktop/github.work/shiny.registration.form/2.jim.time.series/'
 wd.analysis <- paste0(wd.root, 'registration.forms.analysis')
 
 # dowloading files --------------------------------------------------------------

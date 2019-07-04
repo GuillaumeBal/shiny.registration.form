@@ -4,9 +4,9 @@ library(rdrop2) # dropbox
 
 token <- readRDS('token.rds')
 drop_acc(dtoken = token)
-drop.dir <- '2017.registration'
+drop.dir <- '2019MiJttRegistration/0.applications'
 
-wd.root <- 'C:/Users/gbal/Desktop/github.work/shiny.registration.form/'
+wd.root <- 'C:/Users/gbal/Desktop/github.work/shiny.registration.form/2.jim.time.series/'
 wd.analysis <- paste0(wd.root, 'registration.forms.analysis')
 
 # dowloading files --------------------------------------------------------------
@@ -25,7 +25,7 @@ for(f in 1:length(files.to.download)){
   drop_download(paste0(drop.dir, '/', files.to.download[f]),
                 local_path = paste0(download.folder, '/', files.to.download[f]))
 }
-  
+
 # create big list from files ---------------------------------------------------------
 
 responses <- list()
@@ -34,10 +34,19 @@ for(f in 1:length(files.to.download)){
   names(responses)[f] <- gsub(files.to.download[f], pattern = '.RData', replacement = '')
 }
 
-#sapply(responses, '[[', 1)
-#sapply(responses, '[[', 'surname')
-sapply(responses, '[[', 'title')
-sapply(responses, '[[', 'title.long')
-#sapply(responses, '[[', 'authors.long')
-#print(responses, right = FALSE)
-#`Elvira .de eyto.09.34.47`
+
+for(p in 1:length(responses)){
+  cat(names(responses)[p])
+  cat("  \n")
+  cat(responses[[p]]['address'])
+  cat("  \n")
+}
+#responses[[p]] %>% names()
+
+sapply(responses, `[`, 'application') 
+sapply(responses, `[`, 'email') %>% `[`(duplicated(.) %>% `!`) %T>% {print(length(.))} %>% paste(., collapse = ';')
+
+
+Louise.Vaughan.10.38.03 %>% names
+sapply(responses, `[`, 'lunch') %>% `==`("TRUE") %>% sum
+sapply(responses, `[`, 'dinner') %>% `==`("TRUE") %>% sum

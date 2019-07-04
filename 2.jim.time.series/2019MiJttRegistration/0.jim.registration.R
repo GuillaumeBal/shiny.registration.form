@@ -21,7 +21,7 @@ drop_acc(dtoken = token)
 outputs.dir <- '2019MiJttRegistration/0.applications/'
 
 fields.to.save <- c('name', 'middlename', 'surname', 'email', 'address',
-                    'seminar', 'workshp', 'application', 
+                    'seminar', 'workshop', 'application', 
                     'lunch', 'dinner', 'vegan')
 
 # define UI ####################################################################################
